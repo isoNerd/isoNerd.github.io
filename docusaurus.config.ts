@@ -6,8 +6,11 @@ import rehypeKatex from "rehype-katex";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: "yhchen.org",
-  tagline: "site for study and knowledge sharing",
+  /* Metadata */
+  url: "https://isoNerd.github.io",
+  title: "Vibe 部落格",
+  tagline:
+    "與其Vibe Coding，不如自己 Ninja Coding！以共享神秘小知識、屎山代碼、大糞需求為主的網站",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -24,7 +27,6 @@ const config: Config = {
    * https://isonerd.github.io
    * https://blog.yhchen.org
    */
-  url: "https://isonerd.github.io",
   baseUrl: "/",
   deploymentBranch: "gh-pages",
   trailingSlash: false,
@@ -60,10 +62,27 @@ const config: Config = {
     [
       "classic",
       {
+        theme: {
+          customCss: "./src/css/custom.css",
+        },
+        pages: {
+          path: "src/pages",
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
+          admonitions: {
+            keywords: ["note", "tip", "info", "warning", "danger"],
+            extendDefaults: true,
+          },
+        },
         docs: {
+          path: "docs",
           sidebarPath: "./sidebars.ts",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
+          admonitions: {
+            keywords: ["note", "tip", "info", "warning", "danger"],
+            extendDefaults: true,
+          },
         },
         blog: false,
         // blog: {
@@ -78,21 +97,21 @@ const config: Config = {
         //   remarkPlugins: [remarkMath],
         //   rehypePlugins: [rehypeKatex],
         // },
-        pages: {
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatex],
-        },
-        theme: {
-          customCss: "./src/css/custom.css",
-        },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
     // Replace with your project's social card
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/logo-background.png",
+    metadata: [
+      {
+        name: "og:title",
+        content: "與其Vibe Coding，不如自己 Ninja Coding",
+      },
+    ],
     colorMode: {
+      defaultMode: "light",
       respectPrefersColorScheme: true,
     },
     navbar: {
@@ -104,10 +123,9 @@ const config: Config = {
       },
       items: [
         {
-          type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          href: "/introduce",
+          label: "關於本站",
           position: "left",
-          label: "Tutorial",
         },
         {
           type: "dropdown",
@@ -115,8 +133,8 @@ const config: Config = {
           position: "left",
           items: [
             {
-              label: "Facebook",
-              href: "https://www.facebook.com",
+              label: "Not Yet",
+              href: "/introduce",
             },
           ],
         },
@@ -126,8 +144,8 @@ const config: Config = {
           position: "left",
           items: [
             {
-              label: "Facebook",
-              href: "https://www.facebook.com",
+              label: "Not Yet",
+              href: "/introduce",
             },
           ],
         },
@@ -152,23 +170,6 @@ const config: Config = {
           ],
         },
         {
-          title: "Community",
-          items: [
-            {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
-            {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
-            },
-            {
-              label: "X",
-              href: "https://x.com/docusaurus",
-            },
-          ],
-        },
-        {
           title: "More",
           items: [
             // {
@@ -177,7 +178,7 @@ const config: Config = {
             // },
             {
               label: "GitHub",
-              href: "https://github.com/facebook/docusaurus",
+              href: "https://github.com/isoNerd",
             },
           ],
         },
@@ -211,6 +212,16 @@ const config: Config = {
       ],
     },
   } satisfies Preset.ThemeConfig,
+
+  stylesheets: [
+    {
+      href: "https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css",
+      type: "text/css",
+      integrity:
+        "sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi",
+      crossorigin: "anonymous",
+    },
+  ],
 
   markdown: {
     mermaid: true,

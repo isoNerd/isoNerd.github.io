@@ -23,6 +23,7 @@
 $$
 \int_{0}^{1} x^n\,dx = \frac{1}{n+1}
 $$
+
 **程式碼（含行高亮）**
 
 ```ts title="two-sum.ts" showLineNumbers

@@ -1,14 +1,16 @@
 import type { ReactNode } from 'react';
 import Layout from '@theme/Layout';
-import img from "@site/static/img/logo.png"
+import ThemedImage from "@theme/ThemedImage";
 import styles from './index.module.css';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 function HomeSection() {
   return (
     <section className={styles.heroSection}>
       <div className={styles.heroContent}>
         <h1 className={styles.heroTitle}>
-          I$O/lEC <span style={{ color: '#880015' }}>Nerd</span>
+          <span style={{ textShadow: '0px 0px 4px white' }}> I$O/lEC</span>
+          <span style={{ color: '#880015' }}>Nerd</span>
         </h1>
         <p className={styles.heroSubtitle}>
           靠 AI 來 Vibe Coding，不如自己 Ninja Coding。
@@ -27,9 +29,12 @@ function HomeSection() {
         </p>
       </div>
       <div className={styles.heroIllustration}>
-        <img
-          src={img}
+        <ThemedImage
           alt="Vibe Coding?"
+          sources={{
+            light: useBaseUrl('/img/logo.png'),
+            dark: useBaseUrl('/img/logo-background.png')
+          }}
           className={styles.heroImage}
         />
       </div>
@@ -40,8 +45,7 @@ function HomeSection() {
 
 export default function Home(): ReactNode {
   return (
-    <Layout
-      description={"An open collection of programming tutorials, notes, and ideas shared for learners and educators alike."}>
+    <Layout description='與其Vibe Coding，不如自己 Ninja Coding！以共享神秘小知識、屎山代碼、大糞需求為主的網站'>
       <main>
         <HomeSection />
       </main>
