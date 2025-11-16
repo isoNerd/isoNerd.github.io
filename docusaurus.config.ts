@@ -76,7 +76,6 @@ const config: Config = {
         },
         docs: {
           path: "docs",
-          sidebarPath: "./sidebars.ts",
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
           admonitions: {
@@ -84,19 +83,25 @@ const config: Config = {
             extendDefaults: true,
           },
         },
-        blog: false,
-        // blog: {
-        //   showReadingTime: true,
-        //   feedOptions: {
-        //     type: ["rss", "atom"],
-        //     xslt: true,
-        //   },
-        //   onInlineTags: "warn",
-        //   onInlineAuthors: "warn",
-        //   onUntruncatedBlogPosts: "warn",
-        //   remarkPlugins: [remarkMath],
-        //   rehypePlugins: [rehypeKatex],
-        // },
+        blog: {
+          showReadingTime: true,
+          blogTitle: "開發與學習筆記",
+          blogDescription: "紀錄工作時用到的一些技術以及整理過的學習筆記",
+          blogSidebarTitle: "文章列表",
+          blogSidebarCount: 20,
+          routeBasePath: "blog",
+          postsPerPage: 2,
+          authorsMapPath: 'authors.yml',
+          feedOptions: {
+            type: ["rss", "atom"],
+            xslt: true,
+          },
+          onInlineTags: "warn",
+          onInlineAuthors: "warn",
+          onUntruncatedBlogPosts: "warn",
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [rehypeKatex],
+        },
       } satisfies Preset.Options,
     ],
   ],
@@ -128,33 +133,15 @@ const config: Config = {
           position: "left",
         },
         {
-          type: "dropdown",
-          label: "教學與工具 / Foundations",
-          position: "left",
-          items: [
-            {
-              label: "Not Yet",
-              href: "/introduce",
-            },
-          ],
-        },
-        {
-          type: "dropdown",
-          label: "深入研究 / Deep Dive",
-          position: "left",
-          items: [
-            {
-              label: "Not Yet",
-              href: "/introduce",
-            },
-          ],
-        },
-        // { to: "/blog", label: "Blog", position: "right" },
-        {
-          href: "https://github.com/facebook/docusaurus",
-          label: "GitHub",
+          to: "/blog",
+          label: "水文農場",
           position: "right",
         },
+        // {
+        //   href: "https://github.com/facebook/docusaurus",
+        //   label: "GitHub",
+        //   position: "right",
+        // },
       ],
     },
     footer: {

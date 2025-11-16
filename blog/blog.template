@@ -1,0 +1,56 @@
+---
+# ====== 基本標準欄位 ======
+title: "文章標題（必填）"
+description: "文章的摘要，用於列表與 SEO。"
+authors: [your-id]            # 對應 authors.yml
+tags: [cpp-systems, dev-tools] # 自己挑你定義好的 tag
+date: 2025-02-13              # 不寫會自動用檔名日期或 git
+
+# ====== URL 相關 ======
+slug: "/your-custom-url"      # 可選，不寫就自動用檔名產生
+image: "./cover.png"          # 可選，blog 列表預覽圖片
+keywords: ["C++", "Tools"]    # 可選，SEO 補強
+
+# ====== TOC / 分頁控制 ======
+hide_table_of_contents: false
+toc_min_heading_level: 2
+toc_max_heading_level: 4
+pagination_prev: null         # 可選，不要上一篇連結
+pagination_next: null         # 可選，不要下一篇連結
+
+# ====== Draft / Preview ======
+draft: false                  # 可選，true = 不會出現在生產環境
+
+---
+
+這裡是摘要區域。
+通常建議寫 1～3 句，讓讀者知道這篇文章在幹嘛。
+
+<!-- truncate -->
+
+# 正文開始
+
+這裡就是正式內容。
+
+你可以開始寫段落、技術分析、或 code block。
+
+例如：
+
+```cpp
+#include <iostream>
+int main() {
+    std::cout << "Hello from blog template\n";
+}
+```
+
+接著寫你要記錄的知識、心得、踩雷紀錄——
+反正 Blog 是你個人的筆記空間，
+想寫多細、多隨性，都沒人管你。
+
+## 小節標題
+
+你也可以用這裡示範 TOC 會怎麼工作。
+
+### 更細的小節
+
+自己根據部落格的主題去撰寫吧

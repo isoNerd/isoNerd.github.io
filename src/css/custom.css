@@ -30,7 +30,6 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
-
 .code-block-error-line {
   background-color: #ff000020;
   display: block;
@@ -39,3 +38,6 @@
   border-left: 3px solid #ff000080;
 }
 
+html, body {
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;;
+}
