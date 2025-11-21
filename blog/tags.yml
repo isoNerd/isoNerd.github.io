@@ -18,3 +18,7 @@ devtools:
   permalink: /devtools
   description: 開發者工具與流程：常用的系統開發工具與使用
 
+misc:
+  label: 雜項
+  permalink: /misc
+  description: 雜項

@@ -1,15 +1,15 @@
 ---
 # ====== 基本標準欄位 ======
-title: "文章標題（必填）"
+title: "範例文章"
 description: "文章的摘要，用於列表與 SEO。"
-authors: [your-id]            # 對應 authors.yml
-tags: [cpp-systems, dev-tools] # 自己挑你定義好的 tag
-date: 2025-02-13              # 不寫會自動用檔名日期或 git
+authors: [yhchen]            # 對應 authors.yml
+tags: [misc] # 自己挑你定義好的 tag
+date: 2025-11-22              # 不寫會自動用檔名日期或 git
 
 # ====== URL 相關 ======
-slug: "/your-custom-url"      # 可選，不寫就自動用檔名產生
-image: "./cover.png"          # 可選，blog 列表預覽圖片
-keywords: ["C++", "Tools"]    # 可選，SEO 補強
+# slug: "/your-custom-url"      # 可選，不寫就自動用檔名產生
+# image: "./cover.png"          # 可選，blog 列表預覽圖片
+# keywords: ["C++", "Tools"]    # 可選，SEO 補強
 
 # ====== TOC / 分頁控制 ======
 hide_table_of_contents: false
@@ -19,7 +19,7 @@ pagination_prev: null         # 可選，不要上一篇連結
 pagination_next: null         # 可選，不要下一篇連結
 
 # ====== Draft / Preview ======
-draft: false                  # 可選，true = 不會出現在生產環境
+draft: true                  # 可選，true = 不會出現在生產環境
 
 ---
 

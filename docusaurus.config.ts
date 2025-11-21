@@ -1,9 +1,46 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const topicsDir = path.join(__dirname, "topics");
+const topics = fs
+  .readdirSync(topicsDir)
+  .filter((name) => fs.statSync(path.join(topicsDir, name)).isDirectory());
+
+const sharedConfig = {
+  remarkPlugins: [remarkMath],
+  rehypePlugins: [rehypeKatex],
+  admonitions: {
+    keywords: ["note", "tip", "info", "warning", "danger"],
+    extendDefaults: true,
+  },
+};
+
+const topicPlugins = topics.map((topicName) => [
+  "@docusaurus/plugin-content-docs",
+  {
+    id: topicName,
+    path: `./topics/${topicName}`,
+    routeBasePath: topicName,
+    ...sharedConfig,
+    sidebarPath: "sidebars.ts",
+  },
+]);
+
+const topicNavbarItems = topics.map((topicName) => ({
+  type: "docSidebar",
+  docsPluginId: topicName,
+  sidebarId: "defaultSidebar",
+  label: topicName,
+}));
 
 const config: Config = {
   /* Metadata */
@@ -67,22 +104,9 @@ const config: Config = {
         },
         pages: {
           path: "src/pages",
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatex],
-          admonitions: {
-            keywords: ["note", "tip", "info", "warning", "danger"],
-            extendDefaults: true,
-          },
+          ...sharedConfig,
         },
-        docs: {
-          path: "docs",
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatex],
-          admonitions: {
-            keywords: ["note", "tip", "info", "warning", "danger"],
-            extendDefaults: true,
-          },
-        },
+        docs: false,
         blog: {
           showReadingTime: true,
           blogTitle: "開發與學習筆記",
@@ -91,7 +115,7 @@ const config: Config = {
           blogSidebarCount: 20,
           routeBasePath: "blog",
           postsPerPage: 2,
-          authorsMapPath: 'authors.yml',
+          authorsMapPath: "authors.yml",
           feedOptions: {
             type: ["rss", "atom"],
             xslt: true,
@@ -99,12 +123,13 @@ const config: Config = {
           onInlineTags: "warn",
           onInlineAuthors: "warn",
           onUntruncatedBlogPosts: "warn",
-          remarkPlugins: [remarkMath],
-          rehypePlugins: [rehypeKatex],
+          ...sharedConfig,
         },
       } satisfies Preset.Options,
     ],
   ],
+
+  plugins: [...topicPlugins],
 
   themeConfig: {
     // Replace with your project's social card
@@ -128,15 +153,15 @@ const config: Config = {
       },
       items: [
         {
-          href: "/introduce",
+          to: "/introduce",
           label: "關於本站",
-          position: "left",
         },
         {
           to: "/blog",
           label: "水文農場",
           position: "right",
         },
+        ...topicNavbarItems,
         // {
         //   href: "https://github.com/facebook/docusaurus",
         //   label: "GitHub",
