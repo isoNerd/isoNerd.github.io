@@ -172,30 +172,8 @@ const config: Config = {
     footer: {
       style: "dark",
       links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Tutorial",
-              to: "/docs/intro",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            // {
-            //   label: "Blog",
-            //   to: "/blog",
-            // },
-            {
-              label: "GitHub",
-              href: "https://github.com/isoNerd",
-            },
-          ],
-        },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} yhchen.org. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} yhchen.org.`,
     },
     prism: {
       theme: prismThemes.oneLight,
