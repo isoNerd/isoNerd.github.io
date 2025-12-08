@@ -1,0 +1,118 @@
+<!doctype html><html lang=zh-TW dir=ltr class="blog-wrapper blog-post-page plugin-blog plugin-id-default" data-has-hydrated=false><head><meta charset=UTF-8><meta name=generator content="Docusaurus v3.9.2"><title data-rh=true>音視頻基本處理流程 | Vibe 部落格</title><meta data-rh=true name=viewport content="width=device-width, initial-scale=1.0"/><meta data-rh=true name=twitter:card content=summary_large_image /><meta data-rh=true property=og:image content=https://isoNerd.github.io/img/logo-background.png /><meta data-rh=true name=twitter:image content=https://isoNerd.github.io/img/logo-background.png /><meta data-rh=true property=og:url content=https://isoNerd.github.io/blog/20251208-01 /><meta data-rh=true property=og:locale content=zh_TW /><meta data-rh=true property=og:locale:alternate content=en_US /><meta data-rh=true name=docusaurus_locale content=zh-Hant /><meta data-rh=true name=docusaurus_tag content=default /><meta data-rh=true name=docsearch:language content=zh-Hant /><meta data-rh=true name=docsearch:docusaurus_tag content=default /><meta data-rh=true name=og:title content="與其Vibe Coding，不如自己 Ninja Coding"/><meta data-rh=true property=og:title content="音視頻基本處理流程 | Vibe 部落格"/><meta data-rh=true name=description content="音視頻資料從來源容器讀取、解封裝、（必要時）編解碼、到封裝成新容器的基本處理流程，並說明純轉封裝與跨 codec 轉換的差異。"/><meta data-rh=true property=og:description content="音視頻資料從來源容器讀取、解封裝、（必要時）編解碼、到封裝成新容器的基本處理流程，並說明純轉封裝與跨 codec 轉換的差異。"/><meta data-rh=true property=og:type content=article /><meta data-rh=true property=article:published_time content=2025-12-08T00:00:00.000Z /><meta data-rh=true property=article:tag content="Streaming 串流應用開發"/><link data-rh=true rel=icon href=/img/favicon.ico /><link data-rh=true rel=canonical href=https://isoNerd.github.io/blog/20251208-01 /><link data-rh=true rel=alternate href=https://isoNerd.github.io/blog/20251208-01 hreflang=zh-TW /><link data-rh=true rel=alternate href=https://isoNerd.github.io/en/blog/20251208-01 hreflang=en-US /><link data-rh=true rel=alternate href=https://isoNerd.github.io/blog/20251208-01 hreflang=x-default /><script data-rh=true type=application/ld+json>{"@context":"https://schema.org","@id":"https://isoNerd.github.io/blog/20251208-01","@type":"BlogPosting","author":[],"datePublished":"2025-12-08T00:00:00.000Z","description":"音視頻資料從來源容器讀取、解封裝、（必要時）編解碼、到封裝成新容器的基本處理流程，並說明純轉封裝與跨 codec 轉換的差異。","headline":"音視頻基本處理流程","isPartOf":{"@id":"https://isoNerd.github.io/blog","@type":"Blog","name":"開發與學習筆記"},"keywords":[],"mainEntityOfPage":"https://isoNerd.github.io/blog/20251208-01","name":"音視頻基本處理流程","url":"https://isoNerd.github.io/blog/20251208-01"}</script><link rel=alternate type=application/rss+xml href=/blog/rss.xml title="Vibe 部落格 RSS Feed"><link rel=alternate type=application/atom+xml href=/blog/atom.xml title="Vibe 部落格 Atom Feed"><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css type=text/css integrity=sha384-WcoG4HRXMzYzfCgiyfrySxx90XSl2rxY5mnVY5TwtWE6KLrArNKn0T/mOgNL0Mmi crossorigin=anonymous><link rel=stylesheet href=/assets/css/styles.5da53911.css /><script src=/assets/js/runtime~main.c98adc2d.js defer></script><script src=/assets/js/main.024c0a6d.js defer></script></head><body class=navigation-with-keyboard><svg style="display: none;"><defs>
+<symbol id=theme-svg-external-link viewBox="0 0 24 24"><path fill=currentColor d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{for(var[t,e]of new URLSearchParams(window.location.search).entries())if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id=__docusaurus><link rel=preload as=image href=/img/favicon.png /><div role=region aria-label=跳至主要内容><a class=skipToContent_NjOk href=#__docusaurus_skipToContent_fallback>跳至主要内容</a></div><nav aria-label=主導航 class="theme-layout-navbar navbar navbar--fixed-top"><div class=navbar__inner><div class="theme-layout-navbar-left navbar__items"><button aria-label=切換導覽列 aria-expanded=false class="navbar__toggle clean-btn" type=button><svg width=30 height=30 viewBox="0 0 30 30" aria-hidden=true><path stroke=currentColor stroke-linecap=round stroke-miterlimit=10 stroke-width=2 d="M4 7h22M4 15h22M4 23h22"/></svg></button><a class=navbar__brand href=/><div class=navbar__logo><img src=/img/favicon.png alt="i$o/lEC Nerd" class="themedComponent_uCpZ themedComponent--light_GSzh"/><img src=/img/favicon.png alt="i$o/lEC Nerd" class="themedComponent_uCpZ themedComponent--dark_Ifr0"/></div><b class="navbar__title text--truncate">首頁</b></a><a class="navbar__item navbar__link" href=/introduce>關於本站</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a aria-current=page class="navbar__item navbar__link navbar__link--active" href=/blog>水文農場</a><div class="toggle_bJ5Q colorModeToggle_Hxwa"><button class="clean-btn toggleButton_lkqK toggleButtonDisabled_xO4l" type=button disabled title="system mode" aria-label="切換淺色/深色模式（當前為system mode）"><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_XdBJ lightToggleIcon_XXJD"><path fill=currentColor d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_XdBJ darkToggleIcon_Rnes"><path fill=currentColor d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"/></svg><svg viewBox="0 0 24 24" width=24 height=24 aria-hidden=true class="toggleIcon_XdBJ systemToggleIcon_DeTi"><path fill=currentColor d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"/></svg></button></div><div class=navbarSearchContainer_xKSA></div></div></div><div role=presentation class=navbar-sidebar__backdrop></div></nav><div id=__docusaurus_skipToContent_fallback class="theme-layout-main main-wrapper mainWrapper_a2VD"><div class="container margin-vert--lg"><div class=row><aside class="col col--3"><nav class="sidebar_QH9e thin-scrollbar" aria-label=最近部落格文章導覽><div class="sidebarItemTitle_bl4S margin-bottom--md">文章列表</div><div role=group><h3 class=yearGroupHeading_qx7A>2025</h3><ul class="sidebarItemList_CjnO clean-list"><li class=sidebarItem_soqa><a aria-current=page class="sidebarItemLink__Sao sidebarItemLinkActive_a4Yl" href=/blog/20251208-01>音視頻基本處理流程</a><li class=sidebarItem_soqa><a class=sidebarItemLink__Sao href=/blog/20251208-02>幀(Frame) 與 時間戳(Timestamp)</a><li class=sidebarItem_soqa><a class=sidebarItemLink__Sao href=/blog/20251116>我想寫什麼</a></ul></div></nav></aside><main class="col col--7"><article class=""><header><h1 class=title_PUuT>音視頻基本處理流程</h1><div class="container_SIqQ margin-vert--md"><time datetime=2025-12-08T00:00:00.000Z>2025年12月8日</time> · <!-- -->閱讀時間約 5 分鐘</div></header><div id=__blog-post-container class=markdown><p>從素材進入系統，到畫面出現在螢幕上的完整路徑，其中所需要的資料結構、格式、傳輸協定，其中包含的所有元件就是音視訊的處理路徑。</p>
+<table><thead><tr><th style=text-align:center><img decoding=async loading=lazy src=https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/simple-player.png alt=GST class=img_pNQo /><tbody><tr><td style=text-align:center>GStreamer Pipeline 示例圖</table>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id=採集-sampling>採集 Sampling<a href=#採集-sampling class=hash-link aria-label="採集 Sampling的直接連結" title="採集 Sampling的直接連結" translate=no>​</a></h2>
+<p>這是音視頻的起點，硬體把連續的物理世界（聲音壓力、光強度）轉成離散的數位數字。Frame 是畫面與聲音的最原始形態。影像是像素矩陣，音訊是連續取樣。這些資料量很大，通常不會直接送到網路上。</p>
+<ul>
+<li class="">取樣：每隔固定時間抓一個數值（sample）。</li>
+<li class="">量化：把這個數值四捨五入到某個 bit 深度。</li>
+<li class="">編碼：用二進位格式把這些數字排好。</li>
+</ul>
+<p>對於音訊來說，類比轉數位常見的採樣率是 44.1KHz 或是 48KHz，將每次量測的數值量化成一個 16bit 或是 24bit 的整數，這個矩陣就代表一秒的聲音；對於視訊來說，常常講「Frame rate」，相機每秒拍幾張畫面、每個畫面中的像素用幾 bits 去表示等。這個過程就是採樣。</p>
+<p>取樣率太低會導致音訊會失真、出現 aliasing；影像會看起來卡、殘影。
+取樣率太高則導致資料量卻暴增，影響後面整條鏈的頻寬與算力。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id=編碼與解碼-codec>編碼與解碼 Codec<a href=#編碼與解碼-codec class=hash-link aria-label="編碼與解碼 Codec的直接連結" title="編碼與解碼 Codec的直接連結" translate=no>​</a></h2>
+<p>編碼負責壓縮，解碼負責解壓縮。就是進行 frame 與 bitstream 之間的轉換。</p>
+<p>壓縮後的資料可以縮小 10～100 倍，傳輸才變得可行。H264、H265、VP8、AV1、AAC、Opus 都屬於這一層。</p>
+<p>影像編碼的行為包含：</p>
+<ul>
+<li class="">參考前後畫面預測</li>
+<li class="">建立 motion vector</li>
+<li class="">使用 I / P / B frame 減少重複資訊</li>
+</ul>
+<p>影像解碼的行為包含：</p>
+<ul>
+<li class="">讀取 bitstream header，了解 frame 類型與參考資訊</li>
+<li class="">重建 prediction + residual</li>
+<li class="">做反量化與反 transform</li>
+<li class="">組回完整 frame 或 PCM 波形</li>
+</ul>
+<p>编解碼本身不關心「bitstream 的來源」，不管是 TS、MP4、RTP，它只吃「乾淨的 bitstream」。</p>
+<p>對於即時通訊，codec 設定（bitrate、GOP、frame size、packetization）直接影響延遲、畫質、丟包後的恢復能力。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id=封裝與解封裝-demuxingmuxing>封裝與解封裝 Demuxing/Muxing<a href=#封裝與解封裝-demuxingmuxing class=hash-link aria-label="封裝與解封裝 Demuxing/Muxing的直接連結" title="封裝與解封裝 Demuxing/Muxing的直接連結" translate=no>​</a></h2>
+<p>當音視訊進行編碼後，每個 bitstream 稱為 track(軌道)。而將一個或多個軌道組成一個可以傳輸、儲存的串流，就是封裝。</p>
+<ul>
+<li class="">收到一條或多條已壓縮的 bitstream（例如 H264 + AAC）。</li>
+<li class="">決定要用什麼封裝格式：MP4、TS、WebM、RTP、FLV…</li>
+<li class="">依照該格式的規則，把 video/audio/subtitle/metadata 混進同一個容器。</li>
+<li class="">安排時間戳與封包邊界，讓未來解封裝能準確還原。</li>
+</ul>
+<p>舉例來說，輸入 H264 + AAC 兩個碼流，最終可能輸出 <code>.mp4</code>, <code>.ts</code>, <code>.webm</code> 檔案等，這個過程就是封裝。</p>
+<p>反過來說，將封裝給打開，還原出裡面的所有軌道，就是解封裝。解封裝不需要理解編碼的細節，只要確認 Frame 的邊界正確、時間戳正確、各條軌道的順序正確還原即可。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id=媒體容器>媒體容器<a href=#媒體容器 class=hash-link aria-label=媒體容器的直接連結 title=媒體容器的直接連結 translate=no>​</a></h3>
+<p>容器是一種結構化的包裝方式，幫你記錄 sample 的邊界、時間戳、編碼參數和軌道分類，讓播放端能知道哪一段是畫面、哪一段是聲音，以及該如何按時間組合。</p>
+<p>管理多條 tracks</p>
+<ul>
+<li class="">影像軌（例如 H264 bitstream）</li>
+<li class="">音訊軌（例如 AAC、Opus、Vorbis）</li>
+<li class="">有時還會有字幕、章節、附加 metadata</li>
+</ul>
+<p>標記 sample 邊界與順序</p>
+<ul>
+<li class="">什麼地方開始是一個完整的 frame</li>
+<li class="">哪些 sample 對應什麼時間戳（PTS/DTS）</li>
+<li class="">不同軌道如何對齊時間</li>
+</ul>
+<p>常見的容器有 <code>mp4</code>, <code>mkv</code>, <code>webm</code>, <code>flv</code>, <code>mpeg-ts</code>, <code>ogg</code>, <code>avi</code> 等。而 metadata 是容器用來描述內容結構、時間軸與播放資訊的輔助資料。它不承載影像或音訊本體，但讓播放器知道「這段內容該怎麼被正確解讀」。</p>
+<ul>
+<li class="">軌道資訊</li>
+<li class="">時間軸與取樣表</li>
+<li class="">編碼器設定</li>
+<li class="">索引</li>
+<li class="">標籤與描述<!-- -->
+<ul>
+<li class="">標題、作者、語言、日期或封面圖</li>
+<li class="">通常是給影音平台用的</li>
+</ul>
+</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id=範例說明>範例說明<a href=#範例說明 class=hash-link aria-label=範例說明的直接連結 title=範例說明的直接連結 translate=no>​</a></h2>
+<p>以最上面的 GStreamer Pipeline 來解釋，假定我們輸入一個 <code>.ogg</code> 檔案，並且打算輸出 <code>.mkv</code> 檔案，並且修改音視訊編碼：</p>
+<ol>
+<li class="">把 MP4 的 metadata 讀進來<!-- -->
+<ul>
+<li class="">有幾個 track</li>
+<li class="">每個 track 的時間軸與 frame 邊界</li>
+<li class="">編解碼的類型 Vorbis + Theora</li>
+</ul>
+</li>
+<li class="">解封裝<!-- -->
+<ul>
+<li class="">找到下一個 video/audio sample 的位置</li>
+<li class="">依照時間戳 PTS/DTS 排序</li>
+<li class="">把壓縮後的 Frame 一個一個讀出來</li>
+</ul>
+</li>
+<li class="">解碼<!-- -->
+<ul>
+<li class="">調用對應的編解碼器，將數據還原成原本的採樣資料</li>
+<li class="">常見的內容是 YUV(Video) + PCM(Audio)</li>
+</ul>
+</li>
+<li class="">編碼<!-- -->
+<ul>
+<li class="">建立 encoder（例如 libvpx、libopus、libx264 等）</li>
+<li class="">設定參數（bitrate、profile、片段大小、GOP 等）</li>
+<li class="">將 raw frame 壓成新 codec 的 bitstream</li>
+</ul>
+</li>
+<li class="">封裝<!-- -->
+<ul>
+<li class="">Muxer 會決定要怎麼把這兩條流放進 MKV</li>
+<li class="">創建 video / audio track</li>
+<li class="">設定時間基準 (timebase)</li>
+<li class="">填寫編碼器的配置資料</li>
+</ul>
+</li>
+<li class="">輸出 MKV 檔案，且補上<!-- -->
+<ul>
+<li class="">檔案需要的索引</li>
+<li class="">metadata</li>
+</ul>
+</li>
+</ol>
+<p>如果我們不打算修改編碼類型，那麼編解碼的步驟就可以省略</p>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id=總結>總結<a href=#總結 class=hash-link aria-label=總結的直接連結 title=總結的直接連結 translate=no>​</a></h2>
+<p>這就是音視訊處理的基本概念：讀取原始容器的 metadata、依照時間戳拆出壓縮後的 frame（解封裝）、必要時將資料還原為原始採樣（解碼）、視需求重新壓縮成新 codec（編碼）、建立目標容器並依規則寫入每個 sample（封裝），最後生成可播放的媒體容器。</div><footer class=docusaurus-mt-lg><div class="row margin-top--sm theme-blog-footer-edit-meta-row"><div class=col><b>標籤：</b><ul class="tags_wM67 padding--none margin-left--sm"><li class=tag_tfKo><a rel=tag title=串流應用開發：編解碼器、音視頻多媒體框架、串流開發。 class="tag_NZKK tagRegular_TAmN" href=/blog/tags/streaming>Streaming 串流應用開發</a></ul></div></div></footer></article><nav class="pagination-nav docusaurus-mt-lg" aria-label=部落格文章分頁導覽><a class="pagination-nav__link pagination-nav__link--next" href=/blog/20251208-02><div class=pagination-nav__sublabel>較舊一篇</div><div class=pagination-nav__label>幀(Frame) 與 時間戳(Timestamp)</div></a></nav></main><div class="col col--2"><div class="tableOfContents_qxQX thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href=#採集-sampling class="table-of-contents__link toc-highlight">採集 Sampling</a><li><a href=#編碼與解碼-codec class="table-of-contents__link toc-highlight">編碼與解碼 Codec</a><li><a href=#封裝與解封裝-demuxingmuxing class="table-of-contents__link toc-highlight">封裝與解封裝 Demuxing/Muxing</a><ul><li><a href=#媒體容器 class="table-of-contents__link toc-highlight">媒體容器</a></ul><li><a href=#範例說明 class="table-of-contents__link toc-highlight">範例說明</a><li><a href=#總結 class="table-of-contents__link toc-highlight">總結</a></ul></div></div></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class=footer__copyright>Copyright © 2025 yhchen.org.</div></div></div></footer></div></body>
