@@ -4,17 +4,17 @@ cpp:
   description: C++ 與系統設計：模板技法、抽象模型、並行機制與底層實作。
 
 networking:
-  label: Networking 網路程式設計
+  label: 網路程式設計
   permalink: /networking
   description: Unix 網路程式設計：事件驅動與併發模型。
 
 streaming:
-  label: Streaming 串流應用開發
+  label: 串流應用開發
   permalink: /streaming
   description: 串流應用開發：編解碼器、音視頻多媒體框架、串流開發。
 
 devtools:
-  label: DevTools 開發工具
+  label: 開發工具
   permalink: /devtools
   description: 開發者工具與流程：常用的系統開發工具與使用
 
