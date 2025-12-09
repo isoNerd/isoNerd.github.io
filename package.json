@@ -12,7 +12,8 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "blog": "pnpm exec tsx ./scripts/blog-create.ts"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
@@ -29,7 +30,8 @@
     "react-dom": "^19.0.0",
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",

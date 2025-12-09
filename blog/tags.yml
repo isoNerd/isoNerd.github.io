@@ -22,3 +22,9 @@ misc:
   label: 雜項
   permalink: /misc
   description: 雜項
+
+draft:
+  label: 草稿
+  permalink: /draft
+  description: Blog 的預設標籤
+

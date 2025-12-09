@@ -8,8 +8,8 @@ function HomeSection() {
   return (
     <section className={styles.heroSection}>
       <div className={styles.heroContent}>
-        <h1 className={styles.heroTitle}>
-          <span style={{ textShadow: '0px 0px 4px white' }}> I$O/lEC</span>
+        <h1 className={styles.heroTitle} style={{ textShadow: '0px 0px 8px white' }}>
+          <span > I$O/lEC</span>
           <span style={{ color: '#880015' }}>Nerd</span>
         </h1>
         <p className={styles.heroSubtitle}>
@@ -25,7 +25,7 @@ function HomeSection() {
         </ul>
         <p className={styles.heroTagline}>
           <em>─ 你知道抄Code除了 <code>Ctrl+C</code>+<code>Ctrl+V</code> 外，
-          還可以用 <code>Ctrl+Ins</code> + <code>Shift+Ins</code> 嗎？</em>
+            還可以用 <code>Ctrl+Ins</code> + <code>Shift+Ins</code> 嗎？</em>
         </p>
       </div>
       <div className={styles.heroIllustration}>

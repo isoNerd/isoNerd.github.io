@@ -112,9 +112,11 @@ const config: Config = {
           blogTitle: "開發與學習筆記",
           blogDescription: "紀錄工作時用到的一些技術以及整理過的學習筆記",
           blogSidebarTitle: "文章列表",
-          blogSidebarCount: 20,
+          blogSidebarCount: 30,
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
+          postsPerPage: "ALL",
           routeBasePath: "blog",
-          postsPerPage: 2,
           authorsMapPath: "authors.yml",
           feedOptions: {
             type: ["rss", "atom"],
@@ -159,19 +161,32 @@ const config: Config = {
         {
           to: "/blog",
           label: "水文農場",
-          position: "right",
+          position: "left",
         },
         ...topicNavbarItems,
-        // {
-        //   href: "https://github.com/facebook/docusaurus",
-        //   label: "GitHub",
-        //   position: "right",
-        // },
+        {
+          href: "https://github.com/isoNerd/isoNerd.github.io",
+          label: "GitHub",
+          position: "right",
+        },
       ],
     },
     footer: {
       style: "dark",
       links: [
+        {
+          title: "部落格",
+          items: [
+            {
+              label: "標籤一覽",
+              to: "/blog/tags",
+            },
+            {
+              label: "作者一覽",
+              to: "/blog/authors",
+            },
+          ],
+        },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} yhchen.org.`,
     },
