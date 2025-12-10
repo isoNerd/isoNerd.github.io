@@ -4,19 +4,89 @@
         <title>Vibe 部落格 Blog</title>
         <link>https://isoNerd.github.io/en/blog</link>
         <description>Vibe 部落格 Blog</description>
-        <lastBuildDate>Mon, 08 Dec 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 10 Dec 2025 15:51:03 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <item>
+            <title><![CDATA[位深(Bit-depth) 與 HDR/SDR]]></title>
+            <link>https://isoNerd.github.io/en/blog/20251210T155103039</link>
+            <guid>https://isoNerd.github.io/en/blog/20251210T155103039</guid>
+            <pubDate>Wed, 10 Dec 2025 15:51:03 GMT</pubDate>
+            <description><![CDATA[每個像素可表達的亮度階數]]></description>
+            <content:encoded><![CDATA[<p>Bit-depth 決定每個像素可表達的亮度階數。階數越高，亮暗過渡越細緻，顏色量化誤差越低。SDR 一般使用 8-bit 或 10-bit，HDR 系統則依賴更高的位深與更大的亮度範圍，才能承載高光、陰影與色彩的動態表現。這些特性直接影響編碼器效率、顯示設備能力與實際傳輸格式。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="bit-depth-的意義">Bit-depth 的意義<a href="https://isonerd.github.io/en/blog/20251210T155103039#bit-depth-%E7%9A%84%E6%84%8F%E7%BE%A9" class="hash-link" aria-label="Direct link to Bit-depth 的意義" title="Direct link to Bit-depth 的意義" translate="no">​</a></h2>
+<p>Bit-depth 指每個顏色通道可用的位元數。若每通道採用 8-bit，就能表達 2<sup>8</sup>=256個亮度階。若採 10-bit，階數提升到2<sup>10</sup>=1024。階數越多，量化誤差越小，影像中陰影、漸層與亮部都更平滑。</p>
+<p>以常見的 8-bit 為例，R/G/B 或 Y/Cb/Cr 的每個通道都有 256 個可能值。這種階數足以支援一般顯示需求，但在大面積漸層、微弱亮暗差的場景中，可能出現明顯的量化階梯。提升到 10-bit 或 12-bit，階數增加到 1024 或 4096，肉眼更難看到色彩跳變，漸層與暗部細節都更完整。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="sdr-與-hdr">SDR 與 HDR<a href="https://isonerd.github.io/en/blog/20251210T155103039#sdr-%E8%88%87-hdr" class="hash-link" aria-label="Direct link to SDR 與 HDR" title="Direct link to SDR 與 HDR" translate="no">​</a></h2>
+<p>Standard Dynamic Range（標準動態範圍）與 High Dynamic Range（高動態範圍）都是影像亮度表現範圍的分類。</p>
+<ul>
+<li class="">
+<p>SDR 傳統上使用 Rec.709 色域與 8-bit 階數。亮度範圍有限，常見顯示亮度落在數百 nits。影像中如果同時包含非常亮的高光與陰影，SDR 無法同時保持細節，部分資訊會被壓縮在亮度曲線中。SDR 的好處在於生態成熟，設備、播放器和編碼器都能有效支援。對多數串流服務與一般顯示環境，8-bit SDR 仍是成本與品質的折衷。</p>
+</li>
+<li class="">
+<p>HDR 的核心並非單純提高 bit-depth，而是提高亮度動態範圍與色彩空間。HDR 常搭配 Rec.2020 色域，以及 PQ 或 HLG 亮度函式。顯示器需要支援更高峰值亮度，並正確處理 HDR 的 EOTF 才能呈現完整效果。HDR 影片普遍使用 10-bit。原因是 8-bit 在 HDR 的亮度範圍下階數不足，容易出現 banding。在 Rec.2020 的色域中，10-bit 能提供足夠解析度而不致產生顏色破裂。</p>
+</li>
+</ul>
+<p>更高 bit-depth 意味著更大資料量。例如 8-bit 轉為 10-bit，大約增加 25% 的原始資料量。雖然編碼器會壓縮，但量化誤差與壓縮效率仍會受到影響。</p>]]></content:encoded>
+            <category>串流應用開發</category>
+        </item>
+        <item>
+            <title><![CDATA[色彩取樣]]></title>
+            <link>https://isoNerd.github.io/en/blog/20251210T155101539</link>
+            <guid>https://isoNerd.github.io/en/blog/20251210T155101539</guid>
+            <pubDate>Wed, 10 Dec 2025 15:51:01 GMT</pubDate>
+            <description><![CDATA[影像記錄顏色的資料布局]]></description>
+            <content:encoded><![CDATA[<p>RGB 與 YUV420 是影像資料最常見的 Pixel Format。RGB 每個像素具備完整三通道；YUV420 則把影像拆成亮度與色度，並以 4:2:0 子取樣降低色度解析度。這種設計能在維持視覺品質的前提下，減少至少一半以上影像資料量，是所有現代編碼器與串流協定的基礎。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="pixel-format">Pixel Format<a href="https://isonerd.github.io/en/blog/20251210T155101539#pixel-format" class="hash-link" aria-label="Direct link to Pixel Format" title="Direct link to Pixel Format" translate="no">​</a></h2>
+<p>Pixel Format 指影像在記憶體中的具體編碼方式，包括通道組成、位元深度與資料排列順序。RGB 直接記錄紅、綠、藍三通道強度，因此資訊完整但容量大。YUV 類格式（更精確為 YCbCr）則將影像拆成亮度 Y 和兩個色度 Cb、Cr，為後續的子取樣與壓縮奠定結構。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="rgb">RGB<a href="https://isonerd.github.io/en/blog/20251210T155101539#rgb" class="hash-link" aria-label="Direct link to RGB" title="Direct link to RGB" translate="no">​</a></h3>
+<p>每個像素包含三個通道：R、G、B。在大多數格式裡，三個值的位深一致（例如各 8 bit）。結構上，RGB 直接描述紅、綠、藍的組成，因此：</p>
+<ul>
+<li class="">適合顯示器與 GPU 處理。</li>
+<li class="">空間大（每像素 3 bytes 或更多）。</li>
+<li class="">不直接節省頻寬。</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="yuv-ycbcr">YUV (YCbCr)<a href="https://isonerd.github.io/en/blog/20251210T155101539#yuv-ycbcr" class="hash-link" aria-label="Direct link to YUV (YCbCr)" title="Direct link to YUV (YCbCr)" translate="no">​</a></h3>
+<p>YUV 將影像拆成亮度與色度後，可依需求調整色度解析度。常見的取樣方式是 4:2:0</p>
+<ul>
+<li class="">第一個數字 4：寬度方向的基底取樣單位</li>
+<li class="">第二個數字 2：色度水平方向縮半</li>
+<li class="">第三個數字 0：色度垂直方向也縮半（與亮度相比）</li>
+</ul>
+<p>為節省頻寬，大多數YUV格式使用的每 pixel bits 都少於24位元。YUV在對相片或影片編碼時，考慮到人類的感知能力，允許降低色度的頻寬(因為人類對亮度比較敏感)。</p>
+<hr>
+<table><thead><tr><th style="text-align:center"><img decoding="async" loading="lazy" alt="Pixel_fmt" src="https://isonerd.github.io/en/assets/images/20251210T155101539-1765382511396-9eaf68ff9d3770fe630ea6d4dbf961e2.png" width="567" height="474" class="img_pNQo"></th></tr></thead><tbody><tr><td style="text-align:center">使用 <code>ffmpeg -pix_fmts</code> 列出Pixel Format</td></tr></tbody></table>
+<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="420-與-422">4:2:0 與 4:2:2<a href="https://isonerd.github.io/en/blog/20251210T155101539#420-%E8%88%87-422" class="hash-link" aria-label="Direct link to 4:2:0 與 4:2:2" title="Direct link to 4:2:0 與 4:2:2" translate="no">​</a></h3>
+<p>4:2:0 的重點在於降低色度解析度。亮度維持逐像素一筆，色度水平與垂直都縮為原本的一半，使色度資料僅佔亮度的四分之一。以 1920×1080 影像為例，Y 是完整 1920×1080，而 Cb/Cr 只有 960×540。這種做法的視覺損失較小，卻能降低大量資料量。</p>
+<p>4:2:2 保留較高的色度密度，色度在水平方向縮半，但垂直方向與亮度一致。以 1920×1080 為例，Cb/Cr 變為 960×1080。相較 4:2:0，它提供更穩定的色彩邊緣與較少色階破裂，但資料量增加約 1.5 倍。此格式常見於廣播、攝影機錄製與需要高色彩精度的製作流程。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="planar-與-packed">Planar 與 Packed<a href="https://isonerd.github.io/en/blog/20251210T155101539#planar-%E8%88%87-packed" class="hash-link" aria-label="Direct link to Planar 與 Packed" title="Direct link to Planar 與 Packed" translate="no">​</a></h2>
+<p>通常會用來表示色彩取樣的資料如何被存放在記憶體</p>
+<ul>
+<li class="">Planar : 每個通道分開</li>
+<li class="">Packed : 三個成分放在一起</li>
+</ul>
+<p>如果使用 1 × N 與 RGB格式來描述兩種儲存方法：</p>
+<div class="language-json codeBlockContainer_aLX4 theme-code-block" style="--prism-background-color:hsl(230, 1%, 98%);--prism-color:hsl(230, 8%, 24%)"><div class="codeBlockContent_N9Zc"><pre tabindex="0" class="prism-code language-json codeBlock_JiTB thin-scrollbar" style="background-color:hsl(230, 1%, 98%);color:hsl(230, 8%, 24%)"><code class="codeBlockLines_gOrH"><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token comment" style="color:hsl(230, 4%, 64%)">// Planar 格式</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain"></span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain">  </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain">R1</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> R2</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> R3</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> R4</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> ...RN</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain">  </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain">G1</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> G2</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> G3</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> G4</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> ...GN</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain">  </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain">B1</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> B2</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> B3</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> B4</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> ...BN</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain"></span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><br></span></code></pre></div></div>
+<div class="language-json codeBlockContainer_aLX4 theme-code-block" style="--prism-background-color:hsl(230, 1%, 98%);--prism-color:hsl(230, 8%, 24%)"><div class="codeBlockContent_N9Zc"><pre tabindex="0" class="prism-code language-json codeBlock_JiTB thin-scrollbar" style="background-color:hsl(230, 1%, 98%);color:hsl(230, 8%, 24%)"><code class="codeBlockLines_gOrH"><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token comment" style="color:hsl(230, 4%, 64%)">// Packed 格式</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain"></span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain"> </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain">R1</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">G1</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">B1</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain">R2</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">G2</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">B2</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain">R3</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">G3</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">B3</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> ...</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain">RN</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">GN</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain">BN</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token plain"> </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><br></span></code></pre></div></div>
+<p>Planar 的概念並不限定通道長度一致，RGB 的由於 R、G、B 三個資料的大小相同，Planar 看起來會等長的，但是換算到 YUV420P 的情況：</p>
+<div class="language-json codeBlockContainer_aLX4 theme-code-block" style="--prism-background-color:hsl(230, 1%, 98%);--prism-color:hsl(230, 8%, 24%)"><div class="codeBlockContent_N9Zc"><pre tabindex="0" class="prism-code language-json codeBlock_JiTB thin-scrollbar" style="background-color:hsl(230, 1%, 98%);color:hsl(230, 8%, 24%)"><code class="codeBlockLines_gOrH"><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token comment" style="color:hsl(230, 4%, 64%)">// Planar</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain"></span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain">  </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token number" style="color:hsl(35, 99%, 36%)">52</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">55</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">61</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">66</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain">  </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token number" style="color:hsl(35, 99%, 36%)">128</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain">  </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token number" style="color:hsl(35, 99%, 36%)">128</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain"></span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain"></span><span class="token comment" style="color:hsl(230, 4%, 64%)">// Packed</span><span class="token plain"></span><br></span><span class="token-line" style="color:hsl(230, 8%, 24%)"><span class="token plain"></span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token plain"> </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">[</span><span class="token number" style="color:hsl(35, 99%, 36%)">52</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">55</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">61</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">66</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">128</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">,</span><span class="token plain"> </span><span class="token number" style="color:hsl(35, 99%, 36%)">128</span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><span class="token plain">... </span><span class="token punctuation" style="color:hsl(119, 34%, 47%)">]</span><br></span></code></pre></div></div>
+<p>因為 Cb 與 Cr 的分量是 Y 的四分之一( Weight * 0.5, Height * 0.5)，所以看起來不會像 RGB 那樣三個通道的長度是等長的。</p>
+<p>Planar 在記憶體裡會是三段或更多段獨立的平面：<code>YYYY... ,CbCb... ,CrCr...</code></p>
+<p>亮度、色度資料在邏輯上完全分離。這導致亮度與色度可以獨立處理，且同一通道連續排列，使濾波、縮放、捲積等計算更好向量化。這也是編碼器預期的輸入格式</p>
+<p>Packed 把每個像素的成分擺在一起：<code>YCbYCr, YCbYCr, YCbYCr ...</code></p>
+<p>這針對單一像速處理的算法很簡單，因為直接取出下一個區段的資料就好，不必訪問其他通道的資料。但不利於編碼器處理，因為壓縮算法完全不同，且不好進行向量化。</p>]]></content:encoded>
+            <category>串流應用開發</category>
+        </item>
+        <item>
             <title><![CDATA[音視頻基本處理流程]]></title>
-            <link>https://isoNerd.github.io/en/blog/20251208-01</link>
-            <guid>https://isoNerd.github.io/en/blog/20251208-01</guid>
+            <link>https://isoNerd.github.io/en/blog/20251208T000000001</link>
+            <guid>https://isoNerd.github.io/en/blog/20251208T000000001</guid>
             <pubDate>Mon, 08 Dec 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[音視頻資料從來源容器讀取、解封裝、（必要時）編解碼、到封裝成新容器的基本處理流程，並說明純轉封裝與跨 codec 轉換的差異。]]></description>
             <content:encoded><![CDATA[<p>從素材進入系統，到畫面出現在螢幕上的完整路徑，其中所需要的資料結構、格式、傳輸協定，其中包含的所有元件就是音視訊的處理路徑。</p>
 <table><thead><tr><th style="text-align:center"><img decoding="async" loading="lazy" src="https://gstreamer.freedesktop.org/documentation/application-development/introduction/images/simple-player.png" alt="GST" class="img_pNQo"></th></tr></thead><tbody><tr><td style="text-align:center">GStreamer Pipeline 示例圖</td></tr></tbody></table>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="採集-sampling">採集 Sampling<a href="https://isonerd.github.io/en/blog/20251208-01#%E6%8E%A1%E9%9B%86-sampling" class="hash-link" aria-label="Direct link to 採集 Sampling" title="Direct link to 採集 Sampling" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="採集-sampling">採集 Sampling<a href="https://isonerd.github.io/en/blog/20251208T000000001#%E6%8E%A1%E9%9B%86-sampling" class="hash-link" aria-label="Direct link to 採集 Sampling" title="Direct link to 採集 Sampling" translate="no">​</a></h2>
 <p>這是音視頻的起點，硬體把連續的物理世界（聲音壓力、光強度）轉成離散的數位數字。Frame 是畫面與聲音的最原始形態。影像是像素矩陣，音訊是連續取樣。這些資料量很大，通常不會直接送到網路上。</p>
 <ul>
 <li class="">取樣：每隔固定時間抓一個數值（sample）。</li>
@@ -26,7 +96,7 @@
 <p>對於音訊來說，類比轉數位常見的採樣率是 44.1KHz 或是 48KHz，將每次量測的數值量化成一個 16bit 或是 24bit 的整數，這個矩陣就代表一秒的聲音；對於視訊來說，常常講「Frame rate」，相機每秒拍幾張畫面、每個畫面中的像素用幾 bits 去表示等。這個過程就是採樣。</p>
 <p>取樣率太低會導致音訊會失真、出現 aliasing；影像會看起來卡、殘影。
 取樣率太高則導致資料量卻暴增，影響後面整條鏈的頻寬與算力。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="編碼與解碼-codec">編碼與解碼 Codec<a href="https://isonerd.github.io/en/blog/20251208-01#%E7%B7%A8%E7%A2%BC%E8%88%87%E8%A7%A3%E7%A2%BC-codec" class="hash-link" aria-label="Direct link to 編碼與解碼 Codec" title="Direct link to 編碼與解碼 Codec" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="編碼與解碼-codec">編碼與解碼 Codec<a href="https://isonerd.github.io/en/blog/20251208T000000001#%E7%B7%A8%E7%A2%BC%E8%88%87%E8%A7%A3%E7%A2%BC-codec" class="hash-link" aria-label="Direct link to 編碼與解碼 Codec" title="Direct link to 編碼與解碼 Codec" translate="no">​</a></h2>
 <p>編碼負責壓縮，解碼負責解壓縮。就是進行 frame 與 bitstream 之間的轉換。</p>
 <p>壓縮後的資料可以縮小 10～100 倍，傳輸才變得可行。H264、H265、VP8、AV1、AAC、Opus 都屬於這一層。</p>
 <p>影像編碼的行為包含：</p>
@@ -44,7 +114,7 @@
 </ul>
 <p>编解碼本身不關心「bitstream 的來源」，不管是 TS、MP4、RTP，它只吃「乾淨的 bitstream」。</p>
 <p>對於即時通訊，codec 設定（bitrate、GOP、frame size、packetization）直接影響延遲、畫質、丟包後的恢復能力。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="封裝與解封裝-demuxingmuxing">封裝與解封裝 Demuxing/Muxing<a href="https://isonerd.github.io/en/blog/20251208-01#%E5%B0%81%E8%A3%9D%E8%88%87%E8%A7%A3%E5%B0%81%E8%A3%9D-demuxingmuxing" class="hash-link" aria-label="Direct link to 封裝與解封裝 Demuxing/Muxing" title="Direct link to 封裝與解封裝 Demuxing/Muxing" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="封裝與解封裝-demuxingmuxing">封裝與解封裝 Demuxing/Muxing<a href="https://isonerd.github.io/en/blog/20251208T000000001#%E5%B0%81%E8%A3%9D%E8%88%87%E8%A7%A3%E5%B0%81%E8%A3%9D-demuxingmuxing" class="hash-link" aria-label="Direct link to 封裝與解封裝 Demuxing/Muxing" title="Direct link to 封裝與解封裝 Demuxing/Muxing" translate="no">​</a></h2>
 <p>當音視訊進行編碼後，每個 bitstream 稱為 track(軌道)。而將一個或多個軌道組成一個可以傳輸、儲存的串流，就是封裝。</p>
 <ul>
 <li class="">收到一條或多條已壓縮的 bitstream（例如 H264 + AAC）。</li>
@@ -54,7 +124,7 @@
 </ul>
 <p>舉例來說，輸入 H264 + AAC 兩個碼流，最終可能輸出 <code>.mp4</code>, <code>.ts</code>, <code>.webm</code> 檔案等，這個過程就是封裝。</p>
 <p>反過來說，將封裝給打開，還原出裡面的所有軌道，就是解封裝。解封裝不需要理解編碼的細節，只要確認 Frame 的邊界正確、時間戳正確、各條軌道的順序正確還原即可。</p>
-<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="媒體容器">媒體容器<a href="https://isonerd.github.io/en/blog/20251208-01#%E5%AA%92%E9%AB%94%E5%AE%B9%E5%99%A8" class="hash-link" aria-label="Direct link to 媒體容器" title="Direct link to 媒體容器" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="媒體容器">媒體容器<a href="https://isonerd.github.io/en/blog/20251208T000000001#%E5%AA%92%E9%AB%94%E5%AE%B9%E5%99%A8" class="hash-link" aria-label="Direct link to 媒體容器" title="Direct link to 媒體容器" translate="no">​</a></h3>
 <p>容器是一種結構化的包裝方式，幫你記錄 sample 的邊界、時間戳、編碼參數和軌道分類，讓播放端能知道哪一段是畫面、哪一段是聲音，以及該如何按時間組合。</p>
 <p>管理多條 tracks</p>
 <ul>
@@ -81,7 +151,7 @@
 </ul>
 </li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="範例說明">範例說明<a href="https://isonerd.github.io/en/blog/20251208-01#%E7%AF%84%E4%BE%8B%E8%AA%AA%E6%98%8E" class="hash-link" aria-label="Direct link to 範例說明" title="Direct link to 範例說明" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="範例說明">範例說明<a href="https://isonerd.github.io/en/blog/20251208T000000001#%E7%AF%84%E4%BE%8B%E8%AA%AA%E6%98%8E" class="hash-link" aria-label="Direct link to 範例說明" title="Direct link to 範例說明" translate="no">​</a></h2>
 <p>以最上面的 GStreamer Pipeline 來解釋，假定我們輸入一個 <code>.ogg</code> 檔案，並且打算輸出 <code>.mkv</code> 檔案，並且修改音視訊編碼：</p>
 <ol>
 <li class="">把 MP4 的 metadata 讀進來<!-- -->
@@ -127,18 +197,18 @@
 </li>
 </ol>
 <p>如果我們不打算修改編碼類型，那麼編解碼的步驟就可以省略</p>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="總結">總結<a href="https://isonerd.github.io/en/blog/20251208-01#%E7%B8%BD%E7%B5%90" class="hash-link" aria-label="Direct link to 總結" title="Direct link to 總結" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="總結">總結<a href="https://isonerd.github.io/en/blog/20251208T000000001#%E7%B8%BD%E7%B5%90" class="hash-link" aria-label="Direct link to 總結" title="Direct link to 總結" translate="no">​</a></h2>
 <p>這就是音視訊處理的基本概念：讀取原始容器的 metadata、依照時間戳拆出壓縮後的 frame（解封裝）、必要時將資料還原為原始採樣（解碼）、視需求重新壓縮成新 codec（編碼）、建立目標容器並依規則寫入每個 sample（封裝），最後生成可播放的媒體容器。</p>]]></content:encoded>
-            <category>Streaming 串流應用開發</category>
+            <category>串流應用開發</category>
         </item>
         <item>
             <title><![CDATA[幀(Frame) 與 時間戳(Timestamp)]]></title>
-            <link>https://isoNerd.github.io/en/blog/20251208-02</link>
-            <guid>https://isoNerd.github.io/en/blog/20251208-02</guid>
+            <link>https://isoNerd.github.io/en/blog/20251208T000000002</link>
+            <guid>https://isoNerd.github.io/en/blog/20251208T000000002</guid>
             <pubDate>Mon, 08 Dec 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[幀的基本結構與它在傳輸流程中的定位。]]></description>
             <content:encoded><![CDATA[<p>音訊與視訊的資料型態雖然不同，但在所有現代串流技術中，它們遵循同一套邏輯：資料以 Frame 為最小單位、時間以 timestamp 表示、兩者配合播放器的時脈建立同步。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="視訊幀video-frame">視訊幀(Video Frame)<a href="https://isonerd.github.io/en/blog/20251208-02#%E8%A6%96%E8%A8%8A%E5%B9%80video-frame" class="hash-link" aria-label="Direct link to 視訊幀(Video Frame)" title="Direct link to 視訊幀(Video Frame)" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="視訊幀video-frame">視訊幀(Video Frame)<a href="https://isonerd.github.io/en/blog/20251208T000000002#%E8%A6%96%E8%A8%8A%E5%B9%80video-frame" class="hash-link" aria-label="Direct link to 視訊幀(Video Frame)" title="Direct link to 視訊幀(Video Frame)" translate="no">​</a></h2>
 <p>影像幀是一個靜態畫面。編碼器、播放器、容器格式都以 Frame 作為處理單位。實務上，一個 Frame 具有以下資訊：</p>
 <p>影像幀內容：</p>
 <ul>
@@ -149,7 +219,7 @@
 </ul>
 <p>Frame 本身不帶「秒數」，只帶 timestamp。秒數是由「timestamp ÷ timebase」換算出來。</p>
 <p>例：一個 H264 stream 的時間基常見為 1 / 9K。若某 Frame 的 Timestamp 是 18K，代表它應在「18K / 9K = 2 秒」播放。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="音訊幀audio-frame">音訊幀(Audio Frame)<a href="https://isonerd.github.io/en/blog/20251208-02#%E9%9F%B3%E8%A8%8A%E5%B9%80audio-frame" class="hash-link" aria-label="Direct link to 音訊幀(Audio Frame)" title="Direct link to 音訊幀(Audio Frame)" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="音訊幀audio-frame">音訊幀(Audio Frame)<a href="https://isonerd.github.io/en/blog/20251208T000000002#%E9%9F%B3%E8%A8%8A%E5%B9%80audio-frame" class="hash-link" aria-label="Direct link to 音訊幀(Audio Frame)" title="Direct link to 音訊幀(Audio Frame)" translate="no">​</a></h2>
 <p>音訊幀是一段固定長度的取樣資料。聲音在時間軸上是連續的訊號，因此編碼前會先被切成多段，每段形成一個 Audio Frame。每個音訊編碼器會定義自己的 frame duration，例如 AAC 常見 1024 samples，Opus 常見 20ms 或 60ms。這些都會反映在 timestamp 的連續性上。</p>
 <p>音訊幀內容：</p>
 <ul>
@@ -158,7 +228,7 @@
 <li class="">播放時間戳（PTS）</li>
 <li class="">編碼器內部需要的附加資訊，例如 Opus 的 TOC byte</li>
 </ul>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="時間戳timestamp-與-時基timebase">時間戳(Timestamp) 與 時基(Timebase)<a href="https://isonerd.github.io/en/blog/20251208-02#%E6%99%82%E9%96%93%E6%88%B3timestamp-%E8%88%87-%E6%99%82%E5%9F%BAtimebase" class="hash-link" aria-label="Direct link to 時間戳(Timestamp) 與 時基(Timebase)" title="Direct link to 時間戳(Timestamp) 與 時基(Timebase)" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="時間戳timestamp-與-時基timebase">時間戳(Timestamp) 與 時基(Timebase)<a href="https://isonerd.github.io/en/blog/20251208T000000002#%E6%99%82%E9%96%93%E6%88%B3timestamp-%E8%88%87-%E6%99%82%E5%9F%BAtimebase" class="hash-link" aria-label="Direct link to 時間戳(Timestamp) 與 時基(Timebase)" title="Direct link to 時間戳(Timestamp) 與 時基(Timebase)" translate="no">​</a></h2>
 <p>Timestamp 是一個遞增的整數。它本身沒有意義，需要 timebase 才能換算為秒數。timebase 通常由編碼器、容器或 RTP profile 定義。不同階段可能使用不同的 timebase：</p>
 <ul>
 <li class="">H264 NALU 在 Annex B 階段沒有時間資訊</li>
@@ -166,11 +236,8 @@
 <li class="">RTP 傳輸同樣使用 90kHz 作為 video timestamp 的基準</li>
 </ul>
 <p>若兩個系統的 timebase 不一致，就需要在重封裝時重新計算 timestamp，使播放時序維持一致。</p>
-<div class="theme-admonition theme-admonition-tip admonition_BkEo alert alert--success"><div class="admonitionHeading_swSb"><span class="admonitionIcon_nDpx"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>tip</div><div class="admonitionContent_B2hP"><p>時基的意義是「每一個 timestamp 單位代表多少秒」。</p><p>如果有安裝 ffmpeg，可以嘗試對一個影片進行</p><ul>
-<li class=""><code>ffplay -vf "settb=AVTB*2,setpts=PTS" input.mp4</code> : 2倍時基撥放</li>
-<li class=""><code>ffplay -vf "settb=AVTB/2,setpts=PTS" input.mp4</code> : 0.5倍時基撥放</li>
-</ul></div></div>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="pts-與-dts">PTS 與 DTS<a href="https://isonerd.github.io/en/blog/20251208-02#pts-%E8%88%87-dts" class="hash-link" aria-label="Direct link to PTS 與 DTS" title="Direct link to PTS 與 DTS" translate="no">​</a></h2>
+<div class="theme-admonition theme-admonition-tip admonition_BkEo alert alert--success"><div class="admonitionHeading_swSb"><span class="admonitionIcon_nDpx"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>tip</div><div class="admonitionContent_B2hP"><p>時刻 (Timescale) 與時基 (Timebase) 是一個精確且穩定的時間參考。其含意是將1秒劃分為幾個刻度，比方說 Timescale = <code>90000</code>，則 Timebase = <code>1 / 90000</code>，如果某個幀的時戳為 3600，則必須在第 <code>3600 * Timebase</code> 秒顯示。</p><p>時基是非常重要的，如果直接以採樣率 SR 進行換算，常見的 SR 為 24 , 25 , 30。只要 <code>1 / SR</code> 的結果是無限小數循環，使用 <code>float</code> 與 <code>double</code> 都會有微小的誤差，當播放的影片時間足夠長，就會導致音訊與視訊的漂移(不同步)。以 90000 來說，他是常見的採樣率的公倍數，使得音視訊可以在整數域上進行計算，避免失真。</p></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="pts-與-dts">PTS 與 DTS<a href="https://isonerd.github.io/en/blog/20251208T000000002#pts-%E8%88%87-dts" class="hash-link" aria-label="Direct link to PTS 與 DTS" title="Direct link to PTS 與 DTS" translate="no">​</a></h2>
 <p>PTS 表示播放順序。DTS 表示解碼順序。存在 B-frame(雙向預測幀) 的編碼器會遇到「解碼順序與播放順序不一致」的情況，因此 DTS 會落後於 PTS。沒有 B-frame 的低延遲設定不需要 DTS，播放器可直接依 PTS 進行排程。這是因為 B-Frame 同時參考了前一幀與後一幀的資訊，因此解碼順序與播放順序可能會不一樣。</p>
 <p>例：在一段含 B-frame 的流中：</p>
 <ul>
@@ -179,7 +246,7 @@
 <li class="">Frame 3：P-frame</li>
 </ul>
 <p>解碼順序是 1 → 3 → 2，播放順序是 1 → 2 → 3。PTS/DTS 用來解決這個差異，避免播放器錯誤排序導致畫面停頓。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="frame-與-container-的關係">Frame 與 Container 的關係<a href="https://isonerd.github.io/en/blog/20251208-02#frame-%E8%88%87-container-%E7%9A%84%E9%97%9C%E4%BF%82" class="hash-link" aria-label="Direct link to Frame 與 Container 的關係" title="Direct link to Frame 與 Container 的關係" translate="no">​</a></h2>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="frame-與-container-的關係">Frame 與 Container 的關係<a href="https://isonerd.github.io/en/blog/20251208T000000002#frame-%E8%88%87-container-%E7%9A%84%E9%97%9C%E4%BF%82" class="hash-link" aria-label="Direct link to Frame 與 Container 的關係" title="Direct link to Frame 與 Container 的關係" translate="no">​</a></h2>
 <p>Frame 在容器格式中被放進對應的封包。例如：</p>
 <ul>
 <li class="">在 TS 中是 PES packet。</li>
@@ -201,18 +268,18 @@
 <li class="">Audio（AAC）：取樣率</li>
 </ul>
 <p>若在轉封裝到 RTP 時，沒有正確換算 timestamp，接收端會遭遇 jitter、播放延遲累積或同步錯位。</p>
-<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="可能發生的錯誤">可能發生的錯誤<a href="https://isonerd.github.io/en/blog/20251208-02#%E5%8F%AF%E8%83%BD%E7%99%BC%E7%94%9F%E7%9A%84%E9%8C%AF%E8%AA%A4" class="hash-link" aria-label="Direct link to 可能發生的錯誤" title="Direct link to 可能發生的錯誤" translate="no">​</a></h2>
-<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="audiovideo-不同步">Audio/Video 不同步<a href="https://isonerd.github.io/en/blog/20251208-02#audiovideo-%E4%B8%8D%E5%90%8C%E6%AD%A5" class="hash-link" aria-label="Direct link to Audio/Video 不同步" title="Direct link to Audio/Video 不同步" translate="no">​</a></h3>
+<h2 class="anchor anchorTargetStickyNavbar_Mpx2" id="可能發生的錯誤">可能發生的錯誤<a href="https://isonerd.github.io/en/blog/20251208T000000002#%E5%8F%AF%E8%83%BD%E7%99%BC%E7%94%9F%E7%9A%84%E9%8C%AF%E8%AA%A4" class="hash-link" aria-label="Direct link to 可能發生的錯誤" title="Direct link to 可能發生的錯誤" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="audiovideo-不同步">Audio/Video 不同步<a href="https://isonerd.github.io/en/blog/20251208T000000002#audiovideo-%E4%B8%8D%E5%90%8C%E6%AD%A5" class="hash-link" aria-label="Direct link to Audio/Video 不同步" title="Direct link to Audio/Video 不同步" translate="no">​</a></h3>
 <p>影像 timestamp 使用 timebase A，音訊使用 timebase B，但兩者沒有換算成共同 timebase 。播放器無法對齊，會表現成「音提早」或「畫面落後」。</p>
-<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="b-frame-設定錯誤">B-frame 設定錯誤<a href="https://isonerd.github.io/en/blog/20251208-02#b-frame-%E8%A8%AD%E5%AE%9A%E9%8C%AF%E8%AA%A4" class="hash-link" aria-label="Direct link to B-frame 設定錯誤" title="Direct link to B-frame 設定錯誤" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Mpx2" id="b-frame-設定錯誤">B-frame 設定錯誤<a href="https://isonerd.github.io/en/blog/20251208T000000002#b-frame-%E8%A8%AD%E5%AE%9A%E9%8C%AF%E8%AA%A4" class="hash-link" aria-label="Direct link to B-frame 設定錯誤" title="Direct link to B-frame 設定錯誤" translate="no">​</a></h3>
 <p>若封裝時錯置 composition time offset，B-frame 流會直接破損，例如畫面抖動、播放順序錯亂。</p>]]></content:encoded>
-            <category>Streaming 串流應用開發</category>
+            <category>串流應用開發</category>
         </item>
         <item>
             <title><![CDATA[我想寫什麼]]></title>
-            <link>https://isoNerd.github.io/en/blog/20251116</link>
-            <guid>https://isoNerd.github.io/en/blog/20251116</guid>
-            <pubDate>Sat, 22 Nov 2025 00:00:00 GMT</pubDate>
+            <link>https://isoNerd.github.io/en/blog/20251116T000000000</link>
+            <guid>https://isoNerd.github.io/en/blog/20251116T000000000</guid>
+            <pubDate>Sun, 16 Nov 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[這裡大概會變成什麼地方]]></description>
             <content:encoded><![CDATA[<p>進行開發的時候，偶爾會查詢一些資料，但就是當下看了解決問題，便沒有留下紀錄。之後想要用到時，就會有「這個問題我好像看過，但是忘記在哪裡看到的」，因此我想弄個 Blog 把一些資訊給歸檔。</p>
 <p>程式工作本身資訊量大，工具與框架的更新頻率也高。若沒有一個固定位置紀錄思路、操作步驟或小細節，過一段時間就會失去脈絡。這種遺失不只造成時間消耗，也讓後續調整更容易出錯。由於以前當過助教，所以一些文章寫起來可能會有「教科書」的感覺，主要是我希望讓不同程度的人閱讀都很好理解，因此會盡可能把細節寫的詳細。</p>
