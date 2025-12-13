@@ -191,7 +191,7 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} yhchen.org.`,
     },
     prism: {
-      theme: prismThemes.oneLight,
+      theme: prismThemes.oneDark,
       darkTheme: prismThemes.oneDark,
       additionalLanguages: [
         "java",

@@ -18,10 +18,6 @@ toc_min_heading_level: 2
 toc_max_heading_level: 4
 pagination_prev: null         # 可選，不要上一篇連結
 pagination_next: null         # 可選，不要下一篇連結
-
-# ====== Draft / Preview ======
-draft: true                  # 可選，true = 不會出現在生產環境
-
 ---
 
 摘要、圖片、描述等
